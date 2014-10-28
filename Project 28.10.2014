@@ -12,7 +12,7 @@ vx = 1.0
 vy = 1.0
 
 
-#changing the background to an image
+#changing the background to an image comment out this code if you do not have the image
 gif1 = PhotoImage(file = 'background.gif')
 canvas.create_image(0, 0, image = gif1, anchor = NW)
 
