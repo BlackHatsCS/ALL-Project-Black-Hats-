@@ -1,0 +1,49 @@
+import random
+import time
+from Tkinter import *
+
+window = Tk()
+#Drawing the canvas
+canvas = Canvas(window, width=600, height=300,bg='white')
+canvas.pack(padx = 10, pady = 10)
+
+#x and y velocity of the robot
+vx = 1.0
+vy = 1.0
+
+
+#changing the background to an image
+gif1 = PhotoImage(file = 'background.gif')
+canvas.create_image(0, 0, image = gif1, anchor = NW)
+
+#spawning the in random locations
+obx1 = random.randint(0, 10)
+oby1 = random.randint(0,280)
+obx2 = obx1 + 15
+oby2 = oby1 + 15
+robot = canvas.create_rectangle(obx1, oby1, obx2, oby2, fill = 'black', tags = "robot")
+
+#drawing the walls
+#First wall
+t1w = canvas.create_rectangle(100, 0, 125, 175, fill = 'blue')#First 2 numbers define the top left corner of the shape
+l1w = canvas.create_rectangle(100, 200, 125, 300, fill = 'blue')#Second 2 numbers define the bottom right corner of the shape
+#second wall
+t2w = canvas.create_rectangle(175, 0, 200, 75, fill = 'blue')
+l2w = canvas.create_rectangle(175, 100, 200, 300, fill = 'blue')
+
+for t in range(1, 5000):
+    #basic movement
+    obx1, oby1, obx2, oby2=canvas.coords(robot)
+    canvas.coords(robot,obx1+vx,oby1,obx2+vx,oby2)
+    if obx2>(99) and obx2<(101) and oby1< (175) and oby1> (0):
+        vx = 0
+        print "collision"
+        canvas.move("robot", -5, 0)
+        canvas.update()
+    
+    canvas.update()
+    time.sleep(0.05)
+
+canvas.update()
+
+window.mainloop()
