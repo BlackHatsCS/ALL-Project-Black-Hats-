@@ -1,0 +1,114 @@
+import random
+import time
+from Tkinter import *
+
+window = Tk()
+#Drawing the canvas
+canvas = Canvas(window, width=600, height=300,bg='white')
+canvas.pack(padx = 10, pady = 10)
+
+#x and y velocity of the robot
+vx = 1.0
+vy = 0
+
+count = 5
+
+#changing the background to an image
+gif1 = PhotoImage(file = 'background.gif')
+canvas.create_image(0, 0, image = gif1, anchor = NW)
+
+#Boundaries
+x_min = 0.0
+y_min = 0.0
+x_max = 600.0
+y_max = 300.0
+#spawning the in random locations
+obx1 = random.randint(0, 10)
+oby1 = random.randint(0,280)
+obx2 = obx1 + 15
+oby2 = oby1 + 15
+robot = canvas.create_rectangle(obx1, oby1, obx2, oby2, fill = 'black', tags = "robot")
+
+#drawing the walls
+#First wall
+t1w = canvas.create_rectangle(100, 0, 125, 175, fill = 'blue')#First 2 numbers define the top left corner of the shape
+l1w = canvas.create_rectangle(100, 200, 125, 300, fill = 'blue')#Second 2 numbers define the bottom right corner of the shape
+#second wall
+t2w = canvas.create_rectangle(175, 0, 200, 75, fill = 'blue')
+l2w = canvas.create_rectangle(175, 100, 200, 300, fill = 'blue')
+
+randnum = random.randint(1, 2)
+for t in range(1, 5000):
+    #basic movement
+    obx1, oby1, obx2, oby2=canvas.coords(robot)
+    canvas.coords(robot,obx1+vx,oby1+vy,obx2+vx,oby2+vy)
+    #wall collistion
+    #top of first wall
+    if obx2>(97) and obx2<(99) and oby1< (175) and oby1> (0):
+        vx = 0
+        print "collision"
+        canvas.move("robot", -1, 0)
+        canvas.update()
+        count = 0
+        print randnum
+    #bottom of first wall
+    if obx2>(97) and obx2<(99) and oby2< (300) and oby2> (200):
+        vx = 0
+        print "collision"
+        canvas.move("robot", -1, 0)
+        canvas.update()
+        count = 0
+        print randnum
+    #top of second wall
+    if obx2>(172) and obx2<(174) and oby1< (75) and oby1> (0):
+        vx = 0
+        print "collision"
+        canvas.move("robot", -1, 0)
+        canvas.update()
+        count = 0
+        print randnum
+    #bottom of second wall
+    if obx2>(172) and obx2<(174) and oby2< (300) and oby2> (100):
+        vx = 0
+        print "collision"
+        canvas.move("robot", -1, 0)
+        canvas.update()
+        count = 0
+        print randnum
+    #Vertical movement
+    while count <5:
+        #UP movement
+        if randnum == 1:
+            vy = 1
+            count += 1
+            print "count + 1"
+            obx1, oby1, obx2, oby2=canvas.coords(robot)
+            canvas.coords(robot,obx1+vx,oby1+vy,obx2+vx,oby2+vy)
+            time.sleep(0.05)
+            canvas.update()
+        #Down movement
+        else:
+            vy = -1
+            count += 1
+            print "count + 1"
+            obx1, oby1, obx2, oby2=canvas.coords(robot)
+            canvas.coords(robot,obx1+vx,oby1+vy,obx2+vx,oby2+vy)
+            time.sleep(0.05)
+            canvas.update()
+        #if boundary has been crossed reverse the direction
+        if oby1 <= y_min + 10:
+            randnum = 1
+        if oby2 >= y_max -10:
+            randnum = 2
+    if count == 5:
+        vy = 0
+        vx = 1        
+    
+    
+        
+    canvas.update()
+    time.sleep(0.05)
+
+canvas.update()
+
+window.mainloop()
