@@ -1,0 +1,198 @@
+import random
+import time
+from Tkinter import *
+import tkMessageBox
+
+window = Tk()
+#Drawing the canvas
+canvas = Canvas(window, width=600, height=300,bg='white')
+canvas.pack(padx = 10, pady = 10)
+
+#x and y velocity of the robot
+vx = 1.0
+vy = 0
+#variable definition
+randnum = 0
+count = 5
+lightrand = 0
+light = 3
+
+#changing the background to an image
+gif1 = PhotoImage(file = 'background.gif')
+canvas.create_image(0, 0, image = gif1, anchor = NW)
+
+#Boundaries
+x_min = 0.0
+y_min = 0.0
+x_max = 600.0
+y_max = 300.0
+#spawning the in random locations
+obx1 = random.randint(0, 10)
+oby1 = random.randint(0,280)
+obx2 = obx1 + 15
+oby2 = oby1 + 15
+robot = canvas.create_rectangle(obx1, oby1, obx2, oby2, fill = 'black', tags = "robot")
+
+#drawing lights
+box = canvas.create_rectangle(10, 10, 35, 50, fill = 'black')
+red = canvas.create_circle_arc(12, 12, 22, 22, outline = 'red')
+#drawing the walls
+#1st wall
+t1w = canvas.create_rectangle(100, 0, 125, 175, fill = 'blue')#First 2 numbers define the top left corner of the shape
+l1w = canvas.create_rectangle(100, 200, 125, 300, fill = 'blue')#Second 2 numbers define the bottom right corner of the shape
+#2nd wall
+t2w = canvas.create_rectangle(175, 0, 200, 75, fill = 'blue')
+l2w = canvas.create_rectangle(175, 100, 200, 300, fill = 'blue')
+#3rd wall
+l3w = canvas.create_rectangle(225, 25, 250, 300, fill = 'blue')
+#4th wall
+t4w = canvas.create_rectangle(325, 0, 350, 150, fill = 'blue')
+l4w = canvas.create_rectangle(325, 175, 350, 300, fill = 'blue')
+
+for t in range(1, 5000):
+    while light == 3:
+        #basic movement
+        obx1, oby1, obx2, oby2=canvas.coords(robot)
+        canvas.coords(robot,obx1+vx,oby1+vy,obx2+vx,oby2+vy)
+        lightrand = random.randint(0,100)
+        if lightrand > (99):
+            light = 0
+        if randnum == 0:
+            randnum = random.randint(1, 2)
+        #Completion check
+        if obx2>(580):
+            count = 6
+            vy = 0.0
+            vx = 0.0
+            tkMessageBox.showinfo("Finish", "The robot has gotten to the end of the stage")
+            canvas.move("robot", -1,0)
+        #wall collistion
+        #1st wall
+        #top of 1st wall
+        if obx2>(97) and obx2<(99) and oby1< (175) and oby1> (0):
+            vx = 0
+            canvas.move("robot", -1, 0)
+            canvas.update()
+            count = 0
+            lightrand = random.randint(0,100)
+            if lightrand > (99):
+                light = 0
+        #bottom of 1st wall
+        if obx2>(97) and obx2<(99) and oby2< (300) and oby2> (200):
+            vx = 0
+            canvas.move("robot", -1, 0)
+            canvas.update()
+            count = 0
+            lightrand = random.randint(0,100)
+            if lightrand > (95):
+                light = 0
+        if obx2>(101) and obx2<(102):
+            print "First wall cleared"
+            randnum = 0
+
+        #2nd wall
+        #top of 2nd wall
+        if obx2>(172) and obx2<(174) and oby1<(75) and oby1>(0):
+            vx = 0
+            canvas.move("robot", -1, 0)
+            canvas.update()
+            count = 0
+            lightrand = random.randint(0,100)
+            if lightrand > (99):
+                light = 0
+        #bottom of 2nd wall
+        if obx2>(172) and obx2<(174) and oby2<(300) and oby2>(100):
+            vx = 0
+            canvas.move("robot", -1, 0)
+            canvas.update()
+            count = 0
+            lightrand = random.randint(0,100)
+            if lightrand > (99):
+                light = 0
+        if obx2>(175) and obx2<(176):
+            print "Second wall cleared"
+            randnum = 0
+
+        #3rd wall
+        if obx2>(222) and obx2<(224) and oby2<(300) and oby2>(25):
+            vx = 0
+            canvas.move("robot", -1, 0)
+            canvas.update()
+            count = 0
+            lightrand = random.randint(0,100)
+            if lightrand > (99):
+                light = 0
+        if obx2>(230) and obx2<(231):
+            print "Third wall cleared"
+            randnum = 0
+
+        #4th wall
+        #top of 4th wall
+        if obx2>(322) and obx2<(324) and oby1<(150) and oby1>(0):
+            vx = 0
+            canvas.move("robot", -1, 0)
+            canvas.update()
+            count = 0
+            lightrand = random.randint(0,100)
+            if lightrand > (99):
+                light = 0
+        #bottom of 4th wall
+        if obx2>(322) and obx2<(324) and oby2<(175) and oby2>(300):
+            vx = 0
+            canvas.move("robot", -1, 0)
+            canvas.update()
+            count = 0
+            lightrand = random.randint(0,100)
+            if lightrand > (99):
+                light = 0
+        if obx2>(330) and obx2<(331):
+            print "Forth wall cleared"
+            randnum = 0
+
+        #Vertical movement
+        while count <5:
+            #UP movement
+            if randnum == 1:
+                vy = 1
+                count += 1
+                obx1, oby1, obx2, oby2=canvas.coords(robot)
+                canvas.coords(robot,obx1+vx,oby1+vy,obx2+vx,oby2+vy)
+                time.sleep(0.02)
+                canvas.update()
+            
+                lightrand = random.randint(0,100)
+                if lightrand > (99):
+                    light = 0
+            #Down movement
+            else:
+                vy = -1
+                count += 1
+                obx1, oby1, obx2, oby2=canvas.coords(robot)
+                canvas.coords(robot,obx1+vx,oby1+vy,obx2+vx,oby2+vy)
+                time.sleep(0.02)
+                canvas.update()
+                lightrand = random.randint(0,100)
+                if lightrand > (99):
+                    light = 0
+            #if boundary has been crossed reverse the direction
+            if oby1 <= y_min + 2:
+                randnum = 1
+            if oby2 >= y_max - 2:
+                randnum = 2
+        if count == 5:
+            vy = 0
+            vx = 1        
+      
+        canvas.update()
+        time.sleep(0.02)
+    while light < 3:
+        vx = 0
+        vy = 0
+        light = light + 1
+        time.sleep(0.5)
+        print light
+
+canvas.update()
+
+window.mainloop()
+
